@@ -70,7 +70,7 @@ function help () {
  **********************************************/
 // Create  word array with 40 or more words
 
-const words = ['dog', 'cat', 'horse', 'lion', 'snake', 'bears', 'tigers','rabbit', 'elephant', 'monkey', 'cattle']
+const words = ['dog', 'cat', 'horse', 'lion', 'snake', 'bears', 'tigers','rabbit', 'elephant', 'monkey', 'cattle', 'raccun', 'fox', 'deer', ]
 /**
  * Game Object 
  
@@ -85,8 +85,10 @@ The number of passes used
 The maximum number of passes
  */
 // the game object
-const game = {
+let game = {
+  status: false,
   maxStrikes: 3,
+  wordList: [],
   maxPasses: 3,
   word:null,
   words:null,
@@ -94,6 +96,8 @@ const game = {
   strikes: 0,
   points: 0,
   passes: 0,
+  numberofWords: 10, //Should be 10
+  
 }
 
 console.log(help())
@@ -107,14 +111,29 @@ Display a scrambled version of the word to the player.
 Note : If a game currently active than a new game CANNOT be started.
  */
 function getWord(){
+  
+game.word = game.words.splice(0, 1)[0] .toUpperCase()
 
+ 
+return shuffle(game.word)
 }
+
 function start(){
 if (!game.active ) { // are we playing a game? 
   game.active = true // no start a new one
+  game.strikes = 0
+  game.points = 0
+  game.passes = 0
+  game.words = shuffle(words).slice(0, game.numberofWords)
+  
+ //console.log(game.words)
+
+ return getWord()
+ 
 }
 else{ // Yes, warned a user
   console.warn('You are already playing a game')
+  
 }
 }
 /**'
@@ -130,8 +149,37 @@ Parameter:  The user guess
 
 
  function guess(word){
-
+  if (game.active) {
+    if(word === game.word){
+      game.points++
+     
+     if(game.words.length) {// are there any words left?
+   console.warn(`Correct! Currenr score : ${game.points}`)
+    return `Next word: \n \n ${getWord()}`
+  } else{
+    //no more words = game over
+    game.active= false
+    console.warn(`There are no more words left Game over. \n Final Score: ${game.points}`)
+    return 'Use start() to play again'
+  }
+    
+ } else{
+   game.strikes++
+   if(game.strikes >=game.maxStrikes){
+     game.active = false
+     console.warn(`You are out of strikes. Game over. \n Final Score: ${game.points}`)
+    return 'Use start() to play again'
+   } else{ // Still have strikes left
+    console.warn(`Wrong! You have  : ${game.maxStrikes - game.strikes} strikes left.`)
+    return `Next word: \n \n ${getWord()}`
+   }
  }
+}
+ else{
+   console.warn('You are not playing game')
+   return 'Please use start() to  start new game.'
+ }
+}
  /** 
 Pass Function
   
@@ -143,9 +191,21 @@ Note : The player should NOT be able to pass if there is no active game.
 */
 
   function pass(){
-
+ if (game.active) { // Are playing game?
+  game.passes++
+  if(game.passes < game.maxPasses){
+    game.words.splice(Math.floor(Math.random() * game.word.length), 1, game.word)
+    console.warn(`You used a pass. You  have ${game.maxPasses - game.passes} passes left.`)
+    return `Next word: \n\n ${getWord()}`
+  } else{
+return 'You have no Passes left'
   }
-
+  } else {
+    console.warn('You  are not playing game ')
+    return 'Please use start() to start a new game'
+  }
+   
+  }
   /**
    * Additional Notes:
    * 
@@ -153,4 +213,3 @@ The game will end if there are no more words in the list OR the player has recei
 When the game ends the player total points should be displayed.
 After the game ends the player should be able to start a new game using the start() function
    */
-
