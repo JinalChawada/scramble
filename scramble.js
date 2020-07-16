@@ -69,13 +69,15 @@ function help () {
  * YOUR CODE GOES BELOW
  **********************************************/
 // Create  word array with 40 or more words
+
+const words = ['dog', 'cat', 'horse', 'lion', 'snake', 'bears', 'tigers','rabbit', 'elephant', 'monkey', 'cattle']
 /**
  * Game Object 
  
 The game active status
 The random list of words
 The current word
-The current scrambled word
+The current scrambled word : Not required : Tony
 The number of strikes
 The number of points
 The maximum number of allowed strikes
@@ -85,7 +87,13 @@ The maximum number of passes
 // the game object
 const game = {
   maxStrikes: 3,
-  maxPasses: 3
+  maxPasses: 3,
+  word:null,
+  words:null,
+  active: false,
+  strikes: 0,
+  points: 0,
+  passes: 0,
 }
 
 console.log(help())
@@ -98,8 +106,16 @@ Select a word from the shuffled array save to the game object.
 Display a scrambled version of the word to the player.
 Note : If a game currently active than a new game CANNOT be started.
  */
-function start(){
+function getWord(){
 
+}
+function start(){
+if (!game.active ) { // are we playing a game? 
+  game.active = true // no start a new one
+}
+else{ // Yes, warned a user
+  console.warn('You are already playing a game')
+}
 }
 /**'
  Guess Function
@@ -111,6 +127,7 @@ If the words do NOT match the player will receive a strike and the current word 
 Note: The player should NOT be able to make guesses if there is no active game
 Parameter:  The user guess
  */
+
 
  function guess(word){
 
