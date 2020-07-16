@@ -162,7 +162,7 @@ Parameter:  The user guess
     console.warn(`There are no more words left Game over. \n Final Score: ${game.points}`)
     return 'Use start() to play again'
   }
-    
+
  } else{
    game.strikes++
    if(game.strikes >=game.maxStrikes){
@@ -190,7 +190,7 @@ Parameter: No parameters
 Note : The player should NOT be able to pass if there is no active game.
 */
 
-  function pass(){
+function pass(){
  if (game.active) { // Are playing game?
   game.passes++
   if(game.passes < game.maxPasses){
